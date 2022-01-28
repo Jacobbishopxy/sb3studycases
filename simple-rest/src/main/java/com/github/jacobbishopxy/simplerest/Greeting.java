@@ -4,7 +4,7 @@
  * 使用 Jackson JSON 序列化，默认包含于 web starter 包中
  */
 
-package com.github.jacobbishopxy.sb3studycases;
+package com.github.jacobbishopxy.simplerest;
 
 public class Greeting {
 

@@ -9,19 +9,19 @@
  * 			使其寻找 controllers。
  */
 
-package com.github.jacobbishopxy.sb3studycases;
+package com.github.jacobbishopxy.simplerest;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class Sb3StudyCasesApplication {
+public class SimpleRestApplication {
 
 	// main 方法使用了 Spring Boot 的 `SpringApplication.run()` 方法
 	// 不再需要 `web.xml` 等其它 xml 文件。该 app 是 100% 的纯 Java，
 	// 并且不再需要设置任何 plumbing 或是 infrastructure。
 	public static void main(String[] args) {
-		SpringApplication.run(Sb3StudyCasesApplication.class, args);
+		SpringApplication.run(SimpleRestApplication.class, args);
 	}
 
 }

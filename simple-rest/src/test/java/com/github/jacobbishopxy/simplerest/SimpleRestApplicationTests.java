@@ -1,10 +1,10 @@
-package com.github.jacobbishopxy.sb3studycases;
+package com.github.jacobbishopxy.simplerest;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class Sb3StudyCaseApplicationTests {
+class SimpleRestApplicationTests {
 
 	@Test
 	void contextLoads() {

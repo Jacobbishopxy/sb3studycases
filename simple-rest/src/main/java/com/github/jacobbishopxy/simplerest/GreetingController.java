@@ -20,7 +20,7 @@
  * 将 `Greeting` 对象转为 JSON。
  */
 
-package com.github.jacobbishopxy.sb3studycases;
+package com.github.jacobbishopxy.simplerest;
 
 import java.util.concurrent.atomic.AtomicLong;
 import org.springframework.web.bind.annotation.GetMapping;
