@@ -5,7 +5,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
-@Entity
+@Entity // 告知 Hibernate 由此 class 创建一个表
 public class User {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
