@@ -1,4 +1,4 @@
-# One-to-One One-to-Many Many-to-One Many-to-Many Relationships
+# One-to-One/One-to-Many/Many-to-Many Relationships
 
 ## One-to-one
 
@@ -73,7 +73,7 @@
   }
   ```
 
-  - 创建关联
+- 创建关联
 
   **创建完两个实例之后，接下来就是使用其中一个关联资源来创建关联关系**。
 
@@ -97,4 +97,132 @@
 
   ```bash
   curl -i -X GET http://localhost:8080/addresses/1/library
+  ```
+
+## One-to-many
+
+- Data Model:
+
+  ```java
+  @Entity
+  public class Book {
+
+      @Id
+      @GeneratedValue
+      private long id;
+
+      @Column(nullable=false)
+      private String title;
+
+      @ManyToOne
+      @JoinColumn(name="library_id")
+      private Library library;
+
+      // standard constructor, getter, setter
+  }
+  ```
+
+  ```java
+  public class Library {
+
+      //...
+
+      @OneToMany(mappedBy = "library")
+      private List<Book> books;
+
+      //...
+
+  }
+  ```
+
+- Repository:
+
+  ```java
+  public class Library {
+
+    //...
+
+    @OneToMany(mappedBy = "library")
+    private List<Book> books;
+
+    //...
+
+  }
+  ```
+
+- 关联资源
+
+  首先通过 _/books_ 添加 _books_ 实例：
+
+  ```bash
+  curl -i -X POST -d "{\"title\":\"Book1\"}" -H "Content-Type:application/json" http://localhost:8080/books
+  ```
+
+  返回 JSON：
+
+  ```json
+  {
+  	"title": "Book1",
+  	"_links": {
+  		"self": {
+  			"href": "http://localhost:8080/books/1"
+  		},
+  		"book": {
+  			"href": "http://localhost:8080/books/1"
+  		},
+  		"bookLibrary": {
+  			"href": "http://localhost:8080/books/1/library"
+  		}
+  	}
+  }
+  ```
+
+  返回的结构内我们可以看到关联 endpoint _/books/{bookId}/library_ 被创建了。
+
+  接着通过之前的 PUT 方法 **关联 book 至 library**：
+
+  ```bash
+  curl -i -X PUT -H "Content-Type:text/uri-list" -d "http://localhost:8080/libraries/1" http://localhost:8080/books/1/library
+  ```
+
+  通过 library 的 _/books_ GET 方法 **验证 library 中的 books**：
+
+  ```bash
+  curl -i -X GET http://localhost:8080/libraries/1/books
+  ```
+
+  返回的 JSON 将会包含 books 的数组：
+
+  ```json
+  {
+  	"_embedded": {
+  		"books": [
+  			{
+  				"title": "Book1",
+  				"_links": {
+  					"self": {
+  						"href": "http://localhost:8080/books/1"
+  					},
+  					"book": {
+  						"href": "http://localhost:8080/books/1"
+  					},
+  					"bookLibrary": {
+  						"href": "http://localhost:8080/books/1/library"
+  					}
+  				}
+  			}
+  		]
+  	},
+  	"_links": {
+  		"self": {
+  			"href": "http://localhost:8080/libraries/1/books"
+  		}
+  	}
+  }
+  ```
+
+  同样的，通过调用 DELETE 方法可以 _移除关联_：
+
+  ```bash
+  curl -i -X DELETE http://localhost:8080/books/1/library
   ```

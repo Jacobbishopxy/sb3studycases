@@ -1,5 +1,7 @@
 package com.github.jacobbishopxy.tablerelationships.models;
 
+import java.util.List;
+
 import org.springframework.data.rest.core.annotation.RestResource;
 
 import jakarta.persistence.Column;
@@ -7,6 +9,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.GenerationType;
 
@@ -24,6 +27,9 @@ public class Library {
   @JoinColumn(name = "address_id")
   @RestResource(path = "libraryAddress")
   private Address address;
+
+  @OneToMany(mappedBy = "library")
+  private List<Book> books;
 
   public String getName() {
     return name;
@@ -47,6 +53,14 @@ public class Library {
 
   public void setAddress(Address address) {
     this.address = address;
+  }
+
+  public List<Book> getBooks() {
+    return books;
+  }
+
+  public void setBooks(List<Book> books) {
+    this.books = books;
   }
 
 }
