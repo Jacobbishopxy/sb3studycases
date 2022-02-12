@@ -368,3 +368,111 @@
   ```bash
   curl -i -X DELETE http://localhost:8080/authors/1/books/1
   ```
+
+## Projection
+
+在只需要关心一个实体的部分属性时，可以使用 Projection 映射。
+
+```java
+@Projection(
+  name = "customBook",
+  types = { Book.class })
+public interface CustomBook {
+    String getTitle();
+}
+```
+
+这里对一个接口使用 _@Projection_ 注解。通过 _name_ 属性来自定义映射的名称，以及 _types_ 属性定义需要映射的对象。
+
+通常而言，我们可以通过 _http://localhost:8080/books/1?projection={projection name}_ 来访问映射结果。
+
+注意需要定义 _Projection_ 于 models 的相同 package 中。另一种方案是使用 _RepositoryRestConfigurerAdapter_ 来显式声明：
+
+```java
+@Configuration
+public class RestConfig implements RepositoryRestConfigurer {
+
+    @Override
+    public void configureRepositoryRestConfiguration(
+      RepositoryRestConfiguration repositoryRestConfiguration, CorsRegistry cors) {
+        repositoryRestConfiguration.getProjectionConfiguration()
+          .addProjection(CustomBook.class);
+    }
+}
+```
+
+## Adding new data to projections
+
+现在让我们学习如何为 projection 添加新数据。前面讨论过可以通过 Projection 来选择那些属性需要显示。除此之外我们还可以添加原本没有的属性。
+
+### 隐藏数据
+
+默认情况下，id 是不会在 view 中显示，因此我们可以显式的包含 _id_：
+
+```java
+@Projection(
+  name = "customBook",
+  types = { Book.class })
+public interface CustomBook {
+    // 显示隐藏属性
+    @Value("#{target.id}")
+    long getId();
+
+    String getTitle();
+}
+```
+
+注意也可以通过 _@JsonIgnore_ 来展示隐藏属性。
+
+### 计算数据
+
+同样的可以添加计算属性：
+
+```java
+@Projection(name = "customBook", types = { Book.class })
+public interface CustomBook {
+
+    @Value("#{target.id}")
+    long getId();
+
+    String getTitle();
+
+    // 添加计算属性
+    @Value("#{target.getAuthors().size()}")
+    int getAuthorCount();
+}
+```
+
+### 更为便利的访问关联资源
+
+最后如果我们需要经常访问相关联的资源 - 例子中为 book 的 authors，可以通过显示的包含资源来避免额外的请求：
+
+```java
+@Projection(
+  name = "customBook",
+  types = { Book.class })
+public interface CustomBook {
+
+    @Value("#{target.id}")
+    long getId();
+
+    String getTitle();
+
+    // 关联资源
+    List<Author> getAuthors();
+
+    @Value("#{target.getAuthors().size()}")
+    int getAuthorCount();
+}
+```
+
+## Excerpts
+
+Excerpts 是资源集合的默认 projections。
+
+```java
+@RepositoryRestResource(excerptProjection = CustomBook.class)
+public interface BookRepository extends CrudRepository<Book, Long> {}
+```
+
+正如之前所提到的，excerpts 仅会自动的应用于资源集合。如果是单个资源，则需要使用 _projection_ 参数。因为如果单个资源使用的是 Projections 作为默认视图，这将使我们很难知道如何从局部视图更新资源。最后重要的一点是 projections 和 excerpts 都是只读的。
