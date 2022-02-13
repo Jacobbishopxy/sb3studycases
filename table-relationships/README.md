@@ -476,3 +476,115 @@ public interface BookRepository extends CrudRepository<Book, Long> {}
 ```
 
 正如之前所提到的，excerpts 仅会自动的应用于资源集合。如果是单个资源，则需要使用 _projection_ 参数。因为如果单个资源使用的是 Projections 作为默认视图，这将使我们很难知道如何从局部视图更新资源。最后重要的一点是 projections 和 excerpts 都是只读的。
+
+## Sqlite Dialect
+
+### 扩展 Dialect
+
+首先需要做的是扩展 _org.hibernate.dialect.Dialect_ 类，用于注册 SQLite 所提供的数据类型。
+
+```java
+public class SQLiteDialect extends Dialect {
+
+    public SQLiteDialect() {
+        registerColumnType(Types.BIT, "integer");
+        registerColumnType(Types.TINYINT, "tinyint");
+        registerColumnType(Types.SMALLINT, "smallint");
+        registerColumnType(Types.INTEGER, "integer");
+        // other data types
+    }
+}
+```
+
+接着我们需要重写一些默认的 _Dialect_ 行为。
+
+### Identity 列支持
+
+本例中，通过自定义实现 _IdentityColumnSupport_ 告诉 Hibernate 如何让 SQLite 处理 _@Id_ 列：
+
+```java
+public class SQLiteIdentityColumnSupport extends IdentityColumnSupportImpl {
+
+    @Override
+    public boolean supportsIdentityColumns() {
+        return true;
+    }
+
+    @Override
+    public String getIdentitySelectString(String table, String column, int type)
+      throws MappingException {
+        return "select last_insert_rowid()";
+    }
+
+    @Override
+    public String getIdentityColumnString(int type) throws MappingException {
+        return "integer";
+    }
+}
+```
+
+### 禁用 Constraints Handling
+
+SQLite 没有提供数据库约束，因此我们需要重载 primary 以及 foreign keys 的方法：
+
+```java
+@Override
+public boolean hasAlterTable() {
+    return false;
+}
+
+@Override
+public boolean dropConstraints() {
+    return false;
+}
+
+@Override
+public String getDropForeignKeyString() {
+    return "";
+}
+
+@Override
+public String getAddForeignKeyConstraintString(String cn,
+  String[] fk, String t, String[] pk, boolean rpk) {
+    return "";
+}
+
+@Override
+public String getAddPrimaryKeyConstraintString(String constraintName) {
+    return "";
+}
+```
+
+## DataSource 配置
+
+同样的因为**Spring Boot 没有提供 SQLite 数据库的配置支持**，因此需要暴露自定义的 _DataSource_ bean：
+
+```java
+@Autowired Environment env;
+
+@Bean
+public DataSource dataSource() {
+    final DriverManagerDataSource dataSource = new DriverManagerDataSource();
+    dataSource.setDriverClassName(env.getProperty("driverClassName"));
+    dataSource.setUrl(env.getProperty("url"));
+    dataSource.setUsername(env.getProperty("user"));
+    dataSource.setPassword(env.getProperty("password"));
+    return dataSource;
+}
+```
+
+最后是在 _persistence.properties_ 文件中配置：
+
+```properties
+driverClassName=org.sqlite.JDBC
+url=jdbc:sqlite:memory:myDb?cache=shared
+username=sa
+password=sa
+hibernate.dialect=com.baeldung.dialect.SQLiteDialect
+hibernate.hbm2ddl.auto=create-drop
+hibernate.show_sql=true
+```
+
+注意这里的 cache 是 _shared_ 的，这使得数据库更新对多个数据库连接可见。
+
+**综上所述，使用上述配置后，app 将会启动一个名为 myDb 的内存数据库**，剩余的 Spring Data Rest 配置可以占用。
