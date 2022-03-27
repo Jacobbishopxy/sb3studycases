@@ -22,3 +22,5 @@ java -jar target/xxx-0.0.1-SNAPSHOT.jar
 - simple-mysql
 
 - table-relationships: [Original Code](https://github.com/eugenp/tutorials/tree/master/spring-data-rest)
+
+- simple-security
