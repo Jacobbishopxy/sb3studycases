@@ -24,3 +24,5 @@ java -jar target/xxx-0.0.1-SNAPSHOT.jar
 - table-relationships: [Original Code](https://github.com/eugenp/tutorials/tree/master/spring-data-rest)
 
 - simple-security
+
+- simple-oauth2: [Spring Tutorial](https://spring.io/guides/tutorials/spring-boot-oauth2/)
