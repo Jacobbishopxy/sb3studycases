@@ -46,13 +46,23 @@ public class SimpleOauth2Application extends WebSecurityConfigurerAdapter {
 		return WebClient.builder().filter(oauth2).build();
 	}
 
+	/**
+	 * Implement and expose `OAuth2UserService` to call the Authorization Server as
+	 * well as your database. Your implementation can delegate to the default
+	 * implementation, which will do the heavy lifting of calling the Authorization
+	 * Server. Your implementation should return something that extends your custom
+	 * `User` object and implements `OAuth2User`.
+	 *
+	 * @param rest
+	 * @return
+	 */
 	@Bean
 	public OAuth2UserService<OAuth2UserRequest, OAuth2User> oauth2UserService(WebClient rest) {
 		DefaultOAuth2UserService delegate = new DefaultOAuth2UserService();
 
 		return request -> {
 			OAuth2User user = delegate.loadUser(request);
-			if (!"github".equals(request.getClientRegistration().getRegistrationId())) {
+			if ("github".equals(request.getClientRegistration().getRegistrationId())) {
 				return user;
 			}
 

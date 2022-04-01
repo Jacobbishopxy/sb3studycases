@@ -1,0 +1,9 @@
+server:
+  port: 8080
+
+base:
+  url: http://localhost:8080
+cas:
+  server:
+    # change this to a real CAS server
+    url: https://cas.test.com/cas

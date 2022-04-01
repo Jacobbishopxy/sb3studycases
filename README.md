@@ -21,8 +21,10 @@ java -jar target/xxx-0.0.1-SNAPSHOT.jar
 
 - simple-mysql
 
-- table-relationships: [Original Code](https://github.com/eugenp/tutorials/tree/master/spring-data-rest)
+- [table-relationships](https://github.com/eugenp/tutorials/tree/master/spring-data-rest)
 
 - simple-security
 
-- simple-oauth2: [Spring Tutorial](https://spring.io/guides/tutorials/spring-boot-oauth2/)
+- [simple-oauth2](https://spring.io/guides/tutorials/spring-boot-oauth2/)
+
+- [simple-cas](https://www.jianshu.com/p/71745170d639)
