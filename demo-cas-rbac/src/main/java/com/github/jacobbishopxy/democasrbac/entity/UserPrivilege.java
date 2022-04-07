@@ -14,14 +14,26 @@ public class UserPrivilege {
   @Column(nullable = false, unique = true)
   private String name;
 
+  @Column(nullable = true)
+  private String description;
+
   @ManyToMany
   private Collection<UserRole> roles;
 
   public UserPrivilege() {
   }
 
+  public UserPrivilege(Long id) {
+    this.id = id;
+  }
+
   public UserPrivilege(String name) {
     this.name = name;
+  }
+
+  public UserPrivilege(String name, String description) {
+    this.name = name;
+    this.description = description;
   }
 
   public UserPrivilege(String name, Collection<UserRole> roles) {
@@ -43,6 +55,14 @@ public class UserPrivilege {
 
   public void setName(String name) {
     this.name = name;
+  }
+
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
   }
 
   public Collection<UserRole> getRoles() {

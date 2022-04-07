@@ -79,7 +79,7 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
           return role;
         })
         .orElseGet(() -> {
-          UserRole role = new UserRole(name, privileges);
+          UserRole role = new UserRole(name, "test case", privileges);
           role.setPrivileges(privileges);
           userRoleRepo.save(role);
           return role;

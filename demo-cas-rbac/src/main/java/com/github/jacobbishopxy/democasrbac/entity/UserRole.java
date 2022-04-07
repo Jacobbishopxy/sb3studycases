@@ -14,6 +14,9 @@ public class UserRole {
   @Column(nullable = false, unique = true)
   private String name;
 
+  @Column(nullable = true)
+  private String description;
+
   @ManyToMany(fetch = FetchType.EAGER)
   @JoinTable(name = "roles_privileges", joinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "privilege_id", referencedColumnName = "id"))
   private Collection<UserPrivilege> privileges;
@@ -21,8 +24,22 @@ public class UserRole {
   public UserRole() {
   }
 
-  public UserRole(String name, Collection<UserPrivilege> privileges) {
+  public UserRole(Long id) {
+    this.id = id;
+  }
+
+  public UserRole(String name) {
     this.name = name;
+  }
+
+  public UserRole(String name, String description) {
+    this.name = name;
+    this.description = description;
+  }
+
+  public UserRole(String name, String description, Collection<UserPrivilege> privileges) {
+    this.name = name;
+    this.description = description;
     this.privileges = privileges;
   }
 
@@ -40,6 +57,14 @@ public class UserRole {
 
   public void setName(String name) {
     this.name = name;
+  }
+
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
   }
 
   public Collection<UserPrivilege> getPrivileges() {
