@@ -5,6 +5,7 @@ import java.util.Collection;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "cas_rbac_user_privilege")
 public class UserPrivilege {
 
   @Id
@@ -17,7 +18,7 @@ public class UserPrivilege {
   @Column(nullable = true)
   private String description;
 
-  @ManyToMany
+  @ManyToMany(mappedBy = "privileges")
   private Collection<UserRole> roles;
 
   public UserPrivilege() {
@@ -36,8 +37,9 @@ public class UserPrivilege {
     this.description = description;
   }
 
-  public UserPrivilege(String name, Collection<UserRole> roles) {
+  public UserPrivilege(String name, String description, Collection<UserRole> roles) {
     this.name = name;
+    this.description = description;
     this.roles = roles;
   }
 

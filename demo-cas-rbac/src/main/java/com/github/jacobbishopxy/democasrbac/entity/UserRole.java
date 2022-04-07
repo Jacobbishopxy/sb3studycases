@@ -5,6 +5,7 @@ import java.util.Collection;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "cas_rbac_user_role")
 public class UserRole {
 
   @Id
@@ -18,7 +19,7 @@ public class UserRole {
   private String description;
 
   @ManyToMany(fetch = FetchType.EAGER)
-  @JoinTable(name = "roles_privileges", joinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "privilege_id", referencedColumnName = "id"))
+  @JoinTable(name = "cas_rbac_roles_privileges", joinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "privilege_id", referencedColumnName = "id"))
   private Collection<UserPrivilege> privileges;
 
   public UserRole() {

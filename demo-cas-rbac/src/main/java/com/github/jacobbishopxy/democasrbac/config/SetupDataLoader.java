@@ -50,9 +50,9 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
     final UserRole supervisor = createRoleIfNotFound("SUPERVISOR", supervisorPrivileges);
 
     // create initial user accounts
-    createUserIfNotFound("visitor@example.com", "visitor", true, List.of(visitor));
-    createUserIfNotFound("editor@example.com", "editor", true, List.of(editor));
-    createUserIfNotFound("supervisor@example.com", "supervisor", true, List.of(supervisor));
+    createUserIfNotFound("visitor", "visitor@example.com", true, List.of(visitor));
+    createUserIfNotFound("editor", "editor@example.com", true, List.of(editor));
+    createUserIfNotFound("supervisor", "supervisor@example.com", true, List.of(supervisor));
 
     alreadySetup = true;
   }
@@ -61,44 +61,21 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
   UserPrivilege createPrivilegeIfNotFound(String name) {
     return userPrivilegeRepo
         .findByName(name)
-        .map(privilege -> {
-          return privilege;
-        })
-        .orElseGet(() -> {
-          UserPrivilege privilege = new UserPrivilege(name);
-          userPrivilegeRepo.save(privilege);
-          return privilege;
-        });
+        .orElse(userPrivilegeRepo.save(new UserPrivilege(name)));
   }
 
   @Transactional
   UserRole createRoleIfNotFound(String name, List<UserPrivilege> privileges) {
     return userRoleRepo
         .findByName(name)
-        .map(role -> {
-          return role;
-        })
-        .orElseGet(() -> {
-          UserRole role = new UserRole(name, "test case", privileges);
-          role.setPrivileges(privileges);
-          userRoleRepo.save(role);
-          return role;
-        });
+        .orElse(userRoleRepo.save(new UserRole(name, "test case", privileges)));
   }
 
   @Transactional
-  UserAccount createUserIfNotFound(String nickname, String email, boolean enabled, List<UserRole> roles) {
+  UserAccount createUserIfNotFound(String nickname, String email, boolean active, List<UserRole> roles) {
     return userAccountRepo
         .findByEmail(email)
-        .map(user -> {
-          return user;
-        })
-        .orElseGet(() -> {
-          UserAccount user = new UserAccount(nickname, email, enabled, roles);
-          user.setRoles(roles);
-          userAccountRepo.save(user);
-          return user;
-        });
+        .orElse(userAccountRepo.save(new UserAccount(nickname, email, active, roles)));
   }
 
 }
