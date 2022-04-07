@@ -41,7 +41,7 @@ public class CustomUserDetailsService implements UserDetailsService {
       }
     }
 
-    return null;
+    return new CustomUserDetails(username, userAccount.getActive(), authorities);
   }
 
 }

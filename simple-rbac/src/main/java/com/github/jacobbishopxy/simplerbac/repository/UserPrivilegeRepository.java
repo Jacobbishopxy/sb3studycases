@@ -9,6 +9,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserPrivilegeRepository extends JpaRepository<UserPrivilege, Integer> {
 
-  Optional<UserAccount> findByUsername(String username);
+  Optional<UserAccount> findByPrivilegeName(String privilegeName);
 
 }

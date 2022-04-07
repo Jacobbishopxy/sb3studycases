@@ -17,7 +17,7 @@ public class UserAccount {
   @Column(nullable = false, unique = true)
   private String email;
 
-  private boolean enabled;
+  private boolean active;
 
   @ManyToMany(fetch = FetchType.EAGER)
   @JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
@@ -26,10 +26,10 @@ public class UserAccount {
   public UserAccount() {
   }
 
-  public UserAccount(String nickname, String email, boolean enabled, Collection<UserRole> roles) {
+  public UserAccount(String nickname, String email, boolean active, Collection<UserRole> roles) {
     this.nickname = nickname;
     this.email = email;
-    this.enabled = enabled;
+    this.active = active;
     this.roles = roles;
   }
 
@@ -57,12 +57,12 @@ public class UserAccount {
     this.email = email;
   }
 
-  public boolean isEnabled() {
-    return enabled;
+  public boolean getActive() {
+    return active;
   }
 
-  public void setEnabled(boolean enabled) {
-    this.enabled = enabled;
+  public void setActive(boolean active) {
+    this.active = active;
   }
 
   public Collection<UserRole> getRoles() {
@@ -80,7 +80,7 @@ public class UserAccount {
         .append("id =").append(id)
         .append(", nickname =").append(nickname)
         .append(", email =").append(email)
-        .append(", enabled =").append(enabled)
+        .append(", enabled =").append(active)
         .append(", roles =").append(roles)
         .append("]");
 
