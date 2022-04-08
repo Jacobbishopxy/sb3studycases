@@ -26,7 +26,7 @@ public class CasConfig {
   private String basUrl;
 
   @Bean
-  public AuthenticationEntryPoint authenticationEntryPointd() {
+  public AuthenticationEntryPoint authenticationEntryPoint() {
     CasAuthenticationEntryPoint entryPoint = new CasAuthenticationEntryPoint();
     entryPoint.setLoginUrl(casServerUrl + "/login");
     entryPoint.setServiceProperties(this.serviceProperties());

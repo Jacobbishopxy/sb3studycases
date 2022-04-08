@@ -10,15 +10,19 @@ import com.github.jacobbishopxy.democasrbac.repository.UserPrivilegeRepo;
 import com.github.jacobbishopxy.democasrbac.repository.UserRoleRepo;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationListener;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 @Component
+@Configuration
 public class SetupDataLoader implements ApplicationListener<ContextRefreshedEvent> {
 
-  private boolean alreadySetup = false;
+  @Value("${db.should-initialize}")
+  private Boolean shouldInitialize;
 
   @Autowired
   private UserAccountRepo userAccountRepo;
@@ -32,7 +36,12 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
   @Override
   @Transactional
   public void onApplicationEvent(final ContextRefreshedEvent event) {
-    if (alreadySetup) {
+
+    if (shouldInitialize == null) {
+      return;
+    }
+
+    if (!shouldInitialize) {
       return;
     }
 
@@ -54,28 +63,28 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
     createUserIfNotFound("editor", "editor@example.com", true, List.of(editor));
     createUserIfNotFound("supervisor", "supervisor@example.com", true, List.of(supervisor));
 
-    alreadySetup = true;
+    shouldInitialize = true;
   }
 
   @Transactional
   UserPrivilege createPrivilegeIfNotFound(String name) {
     return userPrivilegeRepo
         .findByName(name)
-        .orElse(userPrivilegeRepo.save(new UserPrivilege(name)));
+        .orElseGet(() -> userPrivilegeRepo.save(new UserPrivilege(name)));
   }
 
   @Transactional
   UserRole createRoleIfNotFound(String name, List<UserPrivilege> privileges) {
     return userRoleRepo
         .findByName(name)
-        .orElse(userRoleRepo.save(new UserRole(name, "test case", privileges)));
+        .orElseGet(() -> userRoleRepo.save(new UserRole(name, "test case", privileges)));
   }
 
   @Transactional
   UserAccount createUserIfNotFound(String nickname, String email, boolean active, List<UserRole> roles) {
     return userAccountRepo
         .findByEmail(email)
-        .orElse(userAccountRepo.save(new UserAccount(nickname, email, active, roles)));
+        .orElseGet(() -> userAccountRepo.save(new UserAccount(nickname, email, active, roles)));
   }
 
 }

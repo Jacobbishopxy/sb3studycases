@@ -28,7 +28,7 @@ public class CasConfig {
   private String basUrl;
 
   @Bean
-  public AuthenticationEntryPoint authenticationEntryPointd() {
+  public AuthenticationEntryPoint authenticationEntryPoint() {
     CasAuthenticationEntryPoint entryPoint = new CasAuthenticationEntryPoint();
     entryPoint.setLoginUrl(casServerUrl + "/login");
     entryPoint.setServiceProperties(this.serviceProperties());
@@ -64,11 +64,16 @@ public class CasConfig {
   }
 
   @Bean
+  public CustomCasService customCasService() {
+    return new CustomCasService();
+  }
+
+  @Bean
   public CasAuthenticationProvider casAuthenticationProvider() {
     CasAuthenticationProvider provider = new CasAuthenticationProvider();
     provider.setServiceProperties(this.serviceProperties());
     provider.setTicketValidator(this.ticketValidator());
-    provider.setAuthenticationUserDetailsService(new CustomCasService());
+    provider.setAuthenticationUserDetailsService(customCasService());
     provider.setKey("CAS_PROVIDER_LOCALHOST");
     return provider;
   }
@@ -81,7 +86,7 @@ public class CasConfig {
   @Bean
   LogoutFilter logoutFilter() {
     LogoutFilter filter = new LogoutFilter(casServerUrl + "/logout", securityContextLogoutHandler());
-    filter.setFilterProcessesUrl("/logout");
+    filter.setFilterProcessesUrl("/logout/cas");
     return filter;
   }
 

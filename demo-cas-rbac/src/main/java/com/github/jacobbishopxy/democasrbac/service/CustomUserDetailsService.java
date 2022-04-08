@@ -1,6 +1,7 @@
 package com.github.jacobbishopxy.democasrbac.service;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 import javax.transaction.Transactional;
@@ -15,10 +16,9 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-@Service("customUserDetailsService")
+@Component
 @Transactional
 public class CustomUserDetailsService implements UserDetailsService {
 
@@ -27,10 +27,12 @@ public class CustomUserDetailsService implements UserDetailsService {
 
   @Override
   public UserDetails loadUserByUsername(String username) {
-    UserAccount userAccount = userAccountRepo
-        .findByNickname(username)
-        .orElseThrow(() -> new UsernameNotFoundException(
-            String.format("User nickname: %v cannot be found!", username)));
+    Optional<UserAccount> userAccountOpt = userAccountRepo.findByNickname(username);
+    if (userAccountOpt.isEmpty()) {
+      return new CustomUserDetails("visitor", true, new HashSet<GrantedAuthority>());
+    }
+
+    UserAccount userAccount = userAccountOpt.get();
 
     Set<GrantedAuthority> authorities = new HashSet<>();
 

@@ -23,6 +23,5 @@ public class CustomCasService extends AbstractCasAssertionUserDetailsService {
     }
 
     return customUserDetailsService.loadUserByUsername(username);
-
   }
 }

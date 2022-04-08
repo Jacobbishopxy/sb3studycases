@@ -1,4 +1,4 @@
-package com.github.jacobbishopxy.simplecas;
+package com.github.jacobbishopxy.democasrbac.config;
 
 import org.jasig.cas.client.session.SingleSignOutFilter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +11,7 @@ import org.springframework.security.web.authentication.logout.LogoutFilter;
 
 @EnableWebSecurity
 public class WebConfig extends WebSecurityConfigurerAdapter {
+
   @Autowired
   private SingleSignOutFilter singleSignOutFilter;
 
