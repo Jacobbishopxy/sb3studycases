@@ -32,7 +32,7 @@ public class AdminController {
   }
 
   @GetMapping("/user/{id}")
-  public UserAccount showUserById(Long id) {
+  public UserAccount showUserById(@PathVariable Long id) {
     return urService
         .getUserById(id)
         .orElseThrow(() -> new ResponseStatusException(
@@ -44,12 +44,12 @@ public class AdminController {
   // =======================================================================
 
   @PostMapping("/privilege")
-  UserPrivilege registerPrivilege(UserPrivilegeDto dto) {
+  UserPrivilege registerPrivilege(@RequestBody UserPrivilegeDto dto) {
     return urService.registerPrivilege(dto);
   }
 
   @PutMapping("/privilege/{id}")
-  UserPrivilege modifyPrivilege(Long id, UserPrivilegeDto dto) {
+  UserPrivilege modifyPrivilege(@PathVariable Long id, @RequestBody UserPrivilegeDto dto) {
     return urService
         .modifyPrivilege(id, dto)
         .orElseThrow(() -> new ResponseStatusException(
@@ -57,17 +57,17 @@ public class AdminController {
   }
 
   @DeleteMapping("/privilege/{id}")
-  void deletePrivilege(Long id) {
+  void deletePrivilege(@PathVariable Long id) {
     urService.deletePrivilege(id);
   }
 
   @PostMapping("/role")
-  UserRole registerRole(UserRoleDto dto) {
+  UserRole registerRole(@RequestBody UserRoleDto dto) {
     return urService.registerRole(dto);
   }
 
   @PutMapping("/role/{id}")
-  UserRole modifyRole(Long id, UserRoleDto dto) {
+  UserRole modifyRole(@PathVariable Long id, @RequestBody UserRoleDto dto) {
     return urService
         .modifyRole(id, dto)
         .orElseThrow(() -> new ResponseStatusException(
@@ -75,17 +75,17 @@ public class AdminController {
   }
 
   @DeleteMapping("/role/{id}")
-  void deleteRole(Long id) {
+  void deleteRole(@PathVariable Long id) {
     urService.deleteRole(id);
   }
 
   @PostMapping("/user")
-  UserAccount registerUser(UserAccountDto user) {
+  UserAccount registerUser(@RequestBody UserAccountDto user) {
     return urService.registerAccount(user);
   }
 
   @PutMapping("/user/{id}")
-  UserAccount modifyUser(Long id, UserAccountDto user) {
+  UserAccount modifyUser(@PathVariable Long id, @RequestBody UserAccountDto user) {
     return urService
         .modifyAccount(id, user)
         .orElseThrow(() -> new ResponseStatusException(
@@ -93,7 +93,7 @@ public class AdminController {
   }
 
   @DeleteMapping("/user/{id}")
-  void deleteUser(Long id) {
+  void deleteUser(@PathVariable Long id) {
     urService.deleteAccount(id);
   }
 }
