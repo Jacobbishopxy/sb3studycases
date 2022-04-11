@@ -30,3 +30,5 @@ java -jar target/xxx-0.0.1-SNAPSHOT.jar
 - [simple-cas](https://www.jianshu.com/p/71745170d639)
 
 - [simple-rbac](https://springhow.com/spring-rbac/)
+
+- demo-cas-rbac

@@ -1,6 +1,6 @@
 package com.github.jacobbishopxy.democasrbac.config;
 
-import com.github.jacobbishopxy.democasrbac.service.CustomCasService;
+import com.github.jacobbishopxy.democasrbac.security.CustomCasService;
 
 import org.jasig.cas.client.session.SingleSignOutFilter;
 import org.jasig.cas.client.validation.Cas20ServiceTicketValidator;

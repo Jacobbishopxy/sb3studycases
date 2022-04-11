@@ -1,4 +1,4 @@
-package com.github.jacobbishopxy.democasrbac.service;
+package com.github.jacobbishopxy.democasrbac.security;
 
 import java.util.HashSet;
 import java.util.Optional;

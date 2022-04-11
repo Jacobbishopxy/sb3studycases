@@ -27,6 +27,22 @@ public class UserRegistrationService {
   @Autowired
   UserPrivilegeRepo userPrivilegeRepo;
 
+  // =======================================================================
+  // Query methods
+  // =======================================================================
+
+  public List<UserAccount> getAllUsers() {
+    return userAccountRepo.findAll();
+  }
+
+  public Optional<UserAccount> getUserById(Long id) {
+    return userAccountRepo.findById(id);
+  }
+
+  // =======================================================================
+  // Mutation methods
+  // =======================================================================
+
   public UserPrivilege registerPrivilege(UserPrivilegeDto dto) {
     return userPrivilegeRepo.save(dto.intoUserPrivilege());
   }

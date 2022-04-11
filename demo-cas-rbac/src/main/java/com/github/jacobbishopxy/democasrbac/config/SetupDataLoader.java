@@ -24,6 +24,12 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
   @Value("${db.should-initialize}")
   private Boolean shouldInitialize;
 
+  @Value("${db.supervisor-name}")
+  private String supervisorName;
+
+  @Value("${db.supervisor-email}")
+  private String supervisorEmail;
+
   @Autowired
   private UserAccountRepo userAccountRepo;
 
@@ -62,6 +68,9 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
     createUserIfNotFound("visitor", "visitor@example.com", true, List.of(visitor));
     createUserIfNotFound("editor", "editor@example.com", true, List.of(editor));
     createUserIfNotFound("supervisor", "supervisor@example.com", true, List.of(supervisor));
+    createUserIfNotFound(supervisorName, supervisorEmail, true, List.of(supervisor));
+
+    System.out.println("All initial data has been loaded.");
 
     shouldInitialize = true;
   }

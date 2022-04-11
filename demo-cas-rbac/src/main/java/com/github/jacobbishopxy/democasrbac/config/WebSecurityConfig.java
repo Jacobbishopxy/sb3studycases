@@ -10,7 +10,7 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
 
 @EnableWebSecurity
-public class WebConfig extends WebSecurityConfigurerAdapter {
+public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Autowired
   private SingleSignOutFilter singleSignOutFilter;
@@ -28,6 +28,7 @@ public class WebConfig extends WebSecurityConfigurerAdapter {
   protected void configure(HttpSecurity http) throws Exception {
     http.authorizeRequests()
         .antMatchers("/login/cas").permitAll()
+        .antMatchers("/admin").hasRole("SUPERVISOR")
         .anyRequest().authenticated()
         .and()
         .httpBasic().authenticationEntryPoint(authenticationEntryPoint)

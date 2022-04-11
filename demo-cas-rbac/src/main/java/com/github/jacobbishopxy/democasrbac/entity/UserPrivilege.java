@@ -4,6 +4,8 @@ import java.util.Collection;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "cas_rbac_user_privilege")
 public class UserPrivilege {
@@ -18,6 +20,7 @@ public class UserPrivilege {
   @Column(nullable = true)
   private String description;
 
+  @JsonIgnore
   @ManyToMany(mappedBy = "privileges")
   private Collection<UserRole> roles;
 

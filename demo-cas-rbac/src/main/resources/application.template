@@ -10,3 +10,6 @@ server.port=8080
 base.url=http://localhost:8080
 cas.server.url=https://cas.example.com
 db.should-initialize=true
+db.supervisor-name=supervisor
+db.supervisor-email=supervisor@example.com
+
