@@ -25,7 +25,7 @@ public class CasConfig {
   private String casServerUrl;
 
   @Value("${base.url}")
-  private String basUrl;
+  private String baseUrl;
 
   @Bean
   public AuthenticationEntryPoint authenticationEntryPoint() {
@@ -53,7 +53,7 @@ public class CasConfig {
   @Bean
   public ServiceProperties serviceProperties() {
     ServiceProperties serviceProperties = new ServiceProperties();
-    serviceProperties.setService(basUrl + "/login/cas");
+    serviceProperties.setService(baseUrl + "/login/cas");
     serviceProperties.setSendRenew(false);
     return serviceProperties;
   }

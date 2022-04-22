@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -39,6 +40,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .and()
         .addFilter(casAuthenticationFilter)
         .addFilterBefore(singleSignOutFilter, CasAuthenticationFilter.class)
-        .addFilterBefore(logoutFilter, LogoutFilter.class);
+        .addFilterBefore(logoutFilter, LogoutFilter.class)
+        .addFilterAfter(new CustomFilter(), BasicAuthenticationFilter.class);
   }
 }
