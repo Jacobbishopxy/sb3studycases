@@ -6,8 +6,8 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
+// import javax.servlet.http.Cookie;
+// import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.filter.GenericFilterBean;
@@ -20,19 +20,19 @@ public class CustomFilter extends GenericFilterBean {
       ServletResponse response,
       FilterChain chain) throws IOException, ServletException {
 
-    HttpServletRequest req = (HttpServletRequest) request;
+    // HttpServletRequest req = (HttpServletRequest) request;
     HttpServletResponse res = (HttpServletResponse) response;
 
-    Cookie[] cookies = req.getCookies();
+    // Cookie[] cookies = req.getCookies();
 
-    for (Cookie cookie : cookies) {
-      System.out.println(cookie.getName() + ": " + cookie.getValue());
-      res.addCookie(cookie);
-    }
+    // for (Cookie cookie : cookies) {
+    // System.out.println(cookie.getName() + ": " + cookie.getValue());
+    // res.addCookie(cookie);
+    // }
 
-    req.getHeaderNames().asIterator().forEachRemaining(System.out::println);
+    // req.getHeaderNames().asIterator().forEachRemaining(System.out::println);
 
-    System.out.println(">>>>> " + req.getHeader("cookie"));
+    // System.out.println(">>>>> " + req.getHeader("cookie"));
 
     chain.doFilter(request, res);
   }

@@ -27,6 +27,34 @@ public class CasConfig {
   @Value("${base.url}")
   private String baseUrl;
 
+  @Value("${appUser}")
+  private String appUser;
+
+  @Value("${appKey}")
+  private String appKey;
+
+  @Value("${appInfo}")
+  private String appInfo;
+
+  @Value("${validateUrl}")
+  private String validateUrl;
+
+  public String getAppUser() {
+    return appUser;
+  }
+
+  public String getAppKey() {
+    return appKey;
+  }
+
+  public String getAppInfo() {
+    return appInfo;
+  }
+
+  public String getValidateUrl() {
+    return validateUrl;
+  }
+
   @Bean
   public AuthenticationEntryPoint authenticationEntryPoint() {
     CasAuthenticationEntryPoint entryPoint = new CasAuthenticationEntryPoint();

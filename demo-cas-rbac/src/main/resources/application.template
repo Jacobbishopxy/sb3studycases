@@ -14,3 +14,8 @@ db.should-initialize=true
 db.supervisor-name=supervisor
 db.supervisor-email=supervisor@example.com
 
+appUser=appUser
+appKey=appKey
+appInfo=dev-test
+validateUrl=https://cas.example.com/validate
+
