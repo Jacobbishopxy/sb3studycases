@@ -32,3 +32,5 @@ java -jar target/xxx-0.0.1-SNAPSHOT.jar
 - [simple-rbac](https://springhow.com/spring-rbac/)
 
 - demo-cas-rbac
+
+- [simple-gridfs](https://medium.com/nerd-for-tech/file-upload-with-springboot-and-mongodb-76a8f5b9f75d)
