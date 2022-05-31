@@ -4,11 +4,10 @@ public class LoadFile {
 
   private String filename;
   private String fileType;
-  private String fileSize;
+  private Integer fileSize;
   private byte[] file;
 
-  public LoadFile() {
-  }
+  public LoadFile() {}
 
   public String getFilename() {
     return filename;
@@ -26,11 +25,11 @@ public class LoadFile {
     this.fileType = fileType;
   }
 
-  public String getFileSize() {
+  public Integer getFileSize() {
     return fileSize;
   }
 
-  public void setFileSize(String fileSize) {
+  public void setFileSize(Integer fileSize) {
     this.fileSize = fileSize;
   }
 
